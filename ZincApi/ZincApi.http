@@ -1,4 +1,4 @@
-@ZincApi_HostAddress = http://localhost:5289
+@ZincApi_HostAddress = http://localhost:5059
 
 GET {{ZincApi_HostAddress}}/weatherforecast/
 Accept: application/json

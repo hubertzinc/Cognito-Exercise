@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DevTutorials\\Cognito-WebApi\\ZincApi\\ZincApi.csproj": {}
+    "/Users/hubertdumas/testdev/Cognito-Exercise/ZincApi/ZincApi.csproj": {}
   },
   "projects": {
-    "D:\\DevTutorials\\Cognito-WebApi\\ZincApi\\ZincApi.csproj": {
+    "/Users/hubertdumas/testdev/Cognito-Exercise/ZincApi/ZincApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DevTutorials\\Cognito-WebApi\\ZincApi\\ZincApi.csproj",
+        "projectUniqueName": "/Users/hubertdumas/testdev/Cognito-Exercise/ZincApi/ZincApi.csproj",
         "projectName": "ZincApi",
-        "projectPath": "D:\\DevTutorials\\Cognito-WebApi\\ZincApi\\ZincApi.csproj",
-        "packagesPath": "C:\\Users\\Huber\\.nuget\\packages\\",
-        "outputPath": "D:\\DevTutorials\\Cognito-WebApi\\ZincApi\\obj\\",
+        "projectPath": "/Users/hubertdumas/testdev/Cognito-Exercise/ZincApi/ZincApi.csproj",
+        "packagesPath": "/Users/hubertdumas/.nuget/packages/",
+        "outputPath": "/Users/hubertdumas/testdev/Cognito-Exercise/ZincApi/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Huber\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/hubertdumas/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {},
           "https://nuget.pkg.github.com/Zinc-Group/index.json": {}
         },
@@ -46,7 +39,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "Amazon.AspNetCore.Identity.Cognito": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.3, )"
             },
@@ -74,7 +71,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.100/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
