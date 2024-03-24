@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ZincApi")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2579763a8284300023d735ac4c72210f1ea19b90")]
 [assembly: System.Reflection.AssemblyProductAttribute("ZincApi")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ZincApi")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
