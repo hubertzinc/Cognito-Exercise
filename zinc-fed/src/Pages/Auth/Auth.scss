@@ -1,0 +1,45 @@
+.main-container {
+   width: 100%;
+   min-height: 90vh;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+
+   .sign-in-container {
+      width: 30%;
+   }
+
+   .form-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+
+      label {
+         margin-right: 10px;
+      }
+      
+      input {
+         flex-grow: 1;
+      }
+   }
+
+   .user-details-container {
+      display: flex;
+      justify-content: flex-start;
+
+      .user-info {
+         .user-info__details {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+         }
+      }
+   }
+
+   .user-info__name--bold,
+   .user-info__name--bold {
+      font-weight: 700;
+   }
+}
+
