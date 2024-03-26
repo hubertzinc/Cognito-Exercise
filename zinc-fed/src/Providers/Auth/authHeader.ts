@@ -1,11 +1,11 @@
-import { getUser } from "../../Helpers/localStorage";
+import { getAccessToken } from "../../Helpers/localStorage";
 
 export const authHeader = () => {
-  const user = getUser();
+   const accessToken = getAccessToken();
 
-  if (user && user.accessToken) {
-    return { Authorization: "Bearer " + user.accessToken };
-  }
+   if (accessToken) {
+      return { Authorization: "Bearer " + accessToken };
+   }
 
-  return { Authorization: "" };
+   return { Authorization: "" };
 };

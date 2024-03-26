@@ -6,7 +6,7 @@ export interface IApiService {
 }
 
 export class ApiService implements IApiService {
-   private baseUrl: string = "";
+   private baseUrl: string = "https://localhost:7004";
 
    public post<T>(
       endpoint: string,
@@ -15,7 +15,7 @@ export class ApiService implements IApiService {
       const options = {
          method: "POST",
          body: JSON.stringify(body),
-         header: { ...{ "ContentType:": "application/json" }, ...authHeader() }
+         header: { ...{ "Content-Type": "application/json" }, ...authHeader() }
       };
 
       return fetch(`${this.baseUrl}${endpoint}`, options)
@@ -23,11 +23,24 @@ export class ApiService implements IApiService {
    }
 
    public async get<T>(endpoint: string): Promise<T> {
-      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+      const authorizationHeader = authHeader();
+      const options = {
          method: "GET",
-         headers: { ...{ "ContentType:": "application/json" }, ...authHeader() }
+         headers: { ...{ "Content-Type": "application/json" }, ...authorizationHeader }
+      };
+
+      return fetch(`${this.baseUrl}${endpoint}`, options)
+      .then(res => {
+         if (res.ok) {
+            return res.json();
+         }
+
+         throw new Error("Failed to fetch");
+      })
+      .catch(error => {
+         throw error;
       });
 
-      return await response.json();
+      
    }
 }

@@ -41,5 +41,10 @@
    .user-info__name--bold {
       font-weight: 700;
    }
+
+   .authenticated-content {
+      display: flex;
+      flex-direction: column;
+   }
 }
 

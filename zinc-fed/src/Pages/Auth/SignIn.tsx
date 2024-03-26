@@ -3,6 +3,9 @@ import "./Auth.scss"
 import { useEffect, useState } from "react";
 import { AuthService } from "../../Providers/Auth/AuthService";
 import { IUser } from "../../Types/IUser";
+import { IStore } from "../../Types/IStore";
+import { ApiService } from "../../Providers/Api/ApiService";
+import StoresList from "../../Components/StoresList/StoresList";
 
 interface ISignInProps {
    email: string;
@@ -11,12 +14,28 @@ interface ISignInProps {
 
 const SignIn = () => {
    const authService = new AuthService();
+   const apiService = new ApiService();
    const [user, setUser] = useState<IUser | null>(null);
+   const [stores, setStores] = useState<IStore[] | null>([]);
    const methods = useForm<ISignInProps>();
 
    useEffect(() => {
       setUser(authService.getUser());
    }, [])
+
+   useEffect(() => {
+      if (!user) {
+         return;
+      }
+
+      apiService.get<IStore[]>("/store")
+         .then(stores => {
+            setStores(stores);
+         })
+         .catch(error => {
+            alert(error);
+         });
+   }, [user])
 
    const trySignIn = (data: ISignInProps) => {
       console.log(data);
@@ -24,12 +43,9 @@ const SignIn = () => {
       authService.signIn(data.email, data.password)
          .then((user: IUser) => {
             setUser(user);
-
-            // const user = jwtDecode(response);
-            console.log(user);
          })
          .catch(error => {
-            console.log(error);
+            alert(error);
          });
    }
 
@@ -83,24 +99,40 @@ const SignIn = () => {
          }
 
          {user &&
-            <div className="user-details-container">
-               {
-                  <div className="user-info">
-                     <div className="user-info__details">
-                        <div>
-                           Logged in as <span className="user-info__name--bold">{user.username}</span><br />
+            <>
+               <div className="authenticated-content">
+
+
+                  <div className="user-details-container">
+                     {
+                        <div className="user-info">
+                           <div className="user-info__details">
+                              <div>
+                                 Logged in as <span className="user-info__name--bold">{user.username}</span><br />
+                              </div>
+                              <div>
+                                 Email: <span className="user-info__name--bold">{user.email}</span><br />
+                              </div>
+                              <div>
+                                 Id: <span className="user-info__name--bold">{user.id}</span>
+                              </div>
+                           </div>
+
                         </div>
-                        <div>
-                           Email: <span className="user-info__name--bold">{user.email}</span><br />
-                        </div>
-                        <div>
-                           Id: <span className="user-info__name--bold">{user.id}</span>
-                        </div>
-                     </div>
-                     <button className="btn" onClick={signOut} >Sign Out</button>
+                     }
                   </div>
-               }
-            </div>
+
+                  {stores &&
+                     <div className="stores-container">
+                        <StoresList stores={stores ?? []} />
+                     </div>
+                  }
+
+                  <button className="btn" onClick={signOut} >Sign Out</button>
+               </div>
+            </>
+
+
          }
       </div>
    )

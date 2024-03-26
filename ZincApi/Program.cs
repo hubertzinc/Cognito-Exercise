@@ -21,6 +21,16 @@ builder.Services.AddAuthentication(options =>
    };
 });
 
+builder.Services.AddCors(options => 
+{
+   options.AddPolicy("AllowAll", builder =>
+   {
+      builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+   });
+});
+
 builder.Services.AddDbContext<StoreContext>(options =>
    options.UseSqlServer(
       builder.Configuration.GetConnectionString("StoreContext"),
@@ -43,6 +53,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 
