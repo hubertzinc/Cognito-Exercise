@@ -3,59 +3,40 @@ import "./Auth.scss"
 import { useEffect, useState } from "react";
 import { AuthService } from "../../Providers/Auth/AuthService";
 import { IUser } from "../../Types/IUser";
-import { IStore } from "../../Types/IStore";
-import { ApiService } from "../../Providers/Api/ApiService";
-import { IUserProfile } from "../../Types/IUserProfile";
 
 interface ISignInFormProps {
    email: string;
    password: string;
 }
 
+interface ISignUpFormProps {
+   email: string;
+   password: string;
+   confirmPassword: string;
+}
+
 export interface ISignInProps {
-   onSignIn : () => void;
+   onSignIn: () => void;
 }
 
 const SignIn = ({ onSignIn }: ISignInProps) => {
    const authService = new AuthService();
-   const apiService = new ApiService();
    const [user, setUser] = useState<IUser | null>(null);
-      const [stores, setStores] = useState<IStore[] | null>([]);
+   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
    const methods = useForm<ISignInFormProps>();
+   const signUpMethods = useForm<ISignUpFormProps>();
 
-   useEffect(() => {
+      useEffect(() => {
       setUser(authService.getUser());
-   }, [])
+   }, []);
 
    useEffect(() => {
       if (!user) {
          return;
       }
-
-      // apiService.get<IUserProfile>(`/user/${user.email}`)
-      // .then(userProfile => {
-      //       setUseProfile(userProfile);
-      //    })
-      //    .catch(error => {
-      //       alert(error);
-      //    });
 
       onSignIn();
-   }, [user])
-
-   useEffect(() => {
-      if (!user) {
-         return;
-      }
-
-      // apiService.get<IStore[]>(`/store/user/${user.email}`)
-      //    .then(stores => {
-      //       setStores(stores);
-      //    })
-      //    .catch(error => {
-      //       alert(error);
-      //    });
-   }, [user])
+   }, [user]);
 
    const trySignIn = (data: ISignInFormProps) => {
       console.log(data);
@@ -68,49 +49,114 @@ const SignIn = ({ onSignIn }: ISignInProps) => {
             alert(error);
          });
    }
-   
+
+   const trySignUp = (data: ISignUpFormProps) => {
+   }
+
    return (
       <div className="main-container">
          {
             !user &&
-            <div className="sign-in-container">
-               <FormProvider {...methods}>
-                  <form className="sign-in-form" onSubmit={methods.handleSubmit(trySignIn)}>
-                     <div className="form-row">
-                        <label htmlFor="email">Email</label>
-                        <input
-                           type="email"
-                           placeholder="Email"
-                           {
-                           ...methods.register("email", {
-                              required: {
-                                 value: true,
-                                 message: "Email is required"
-                              }
-                           })
-                           } />
-                     </div>
-                     <div className="form-row">
-                        <label htmlFor="password">Password</label>
-                        <input
-                           type="password"
-                           placeholder="Password"
-                           {
-                           ...methods.register("password", {
-                              required: {
-                                 value: true,
-                                 message: "Password is required"
-                              }
-                           })
-                           } />
-                     </div>
-                     <div className="form-row">
-                        <button className="btn">Sign In</button>
-                        <button className="btn">Sign Up</button>
-                     </div>
-                  </form>
-               </FormProvider>
-            </div>
+            <>
+               {
+                  mode === "sign-in" &&
+                  <div className="sign-in-container">
+                     <FormProvider {...methods}>
+                        <form className="sign-in-form" onSubmit={methods.handleSubmit(trySignIn)}>
+                        <div className="form-row">
+                              <label htmlFor="email">Email</label>
+                              <input
+                                 type="email"
+                                 placeholder="Email"
+                                 {
+                                 ...methods.register("email", {
+                                    required: {
+                                       value: true,
+                                       message: "Email is required"
+                                    }
+                                 })
+                                 } />
+                           </div>
+                           <div className="form-row">
+                              <label htmlFor="password">Password</label>
+                              <input
+                                 type="password"
+                                 placeholder="Password"
+                                 {
+                                 ...methods.register("password", {
+                                    required: {
+                                       value: true,
+                                       message: "Password is required"
+                                    }
+                                 })
+                                 } />
+                           </div>
+                           <div className="form-row form-actions">
+                              <button className="btn">Sign In</button>
+                           </div>
+                           <div className="form-row form-actions">
+                              <a className="sign-up" onClick={() => setMode("sign-up")}>Sign Up</a>
+                           </div>
+
+                        </form>
+                     </FormProvider>
+                  </div>
+               }
+               {
+                  mode === "sign-up" &&
+                  <div className="sign-up-container">
+                     <FormProvider {...signUpMethods}>
+                        <form action="" className="sign-in-form" onSubmit={signUpMethods.handleSubmit(trySignUp)}>
+                        <div className="form-row">
+                              <label htmlFor="email">Email</label>
+                              <input
+                                 type="email"
+                                 placeholder="Email"
+                                 {
+                                 ...signUpMethods.register("email", {
+                                    required: {
+                                       value: true,
+                                       message: "Email is required"
+                                    }
+                                 })
+                                 } />
+                           </div>
+                           <div className="form-row">
+                              <label htmlFor="password">Password</label>
+                              <input
+                                 type="password"
+                                 placeholder="Password"
+                                 {
+                                 ...signUpMethods.register("password", {
+                                    required: {
+                                       value: true,
+                                       message: "Password is required"
+                                    }
+                                 })
+                                 } />
+                           </div>
+                           <div className="form-row">
+                              <label htmlFor="confirmPassword">Confirm Password</label>
+                              <input
+                                 type="password"
+                                 placeholder="Confirm password"
+                                 {
+                                 ...signUpMethods.register("confirmPassword", {
+                                    required: {
+                                       value: true,
+                                       message: "Please confirm password"
+                                    }
+                                 })
+                                 } />
+                           </div>
+                           <div className="form-row form-actions">
+                              <a className="sign-up" onClick={() => setMode("sign-in")}>Sign In</a>
+                           </div>
+                        </form>
+                     </FormProvider>
+                  </div>
+               }
+            </>
          }
 
       </div>

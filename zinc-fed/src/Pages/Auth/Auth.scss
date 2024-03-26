@@ -22,6 +22,10 @@
       input {
          flex-grow: 1;
       }
+
+      &.form-actions {
+         justify-content: flex-end;
+      }
    }
 
    .user-details-container {
@@ -45,6 +49,11 @@
    .authenticated-content {
       display: flex;
       flex-direction: column;
+   }
+
+   a.sign-up {
+      font-size: 12px;
+      cursor: pointer;
    }
 }
 
