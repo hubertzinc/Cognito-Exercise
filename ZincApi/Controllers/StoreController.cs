@@ -33,5 +33,12 @@ public class StoreController : ControllerBase
       }
       return Ok(store);
    }
+
+   [HttpGet("user/{userName}", Name = "GetStoresByUser")]
+   public async Task<ActionResult<List<Store>>> GetStoresByUser(string userName)
+   {
+      var stores = await _repository.GetStoresByUser(userName);
+      return Ok(stores);
+   }
    
 }

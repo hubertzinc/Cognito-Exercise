@@ -20,4 +20,15 @@ public class StoreRepository : IStoreRepository
    {
       return await _context.Stores.ToListAsync();
    }
+
+   public async Task<List<Store>> GetStoresByUser(string userName)
+   {
+      var userStores = await _context.UserStores
+         .Include(us => us.Store)
+         .Where(us => us.UserName == userName)
+         .Select(us => us.Store)
+         .ToListAsync();
+
+      return userStores;
+   }
 }
