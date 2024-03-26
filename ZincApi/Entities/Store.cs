@@ -8,4 +8,5 @@ public class Store
    public string Area { get; set; } = string.Empty;
    public string Url { get; set; } = string.Empty;
    public string? TestSiteUrl { get; set; }
+   public List<UserStore> UserStores { get; set; } = new List<UserStore>();
 }

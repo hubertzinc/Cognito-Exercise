@@ -29,4 +29,6 @@ public class UserProfile
    public string? DefaultCostCentre { get; set; }
    public string? ExtraInfo { get; set; }
    public bool? StoreFlag { get; set; }
+
+   public List<UserStore> UserStores { get; set; } = new List<UserStore>();
 }

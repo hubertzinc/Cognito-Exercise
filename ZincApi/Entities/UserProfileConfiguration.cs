@@ -78,5 +78,9 @@ public class UserProfileConfiguration : IEntityTypeConfiguration<UserProfile>
         .HasColumnType("nvarchar(max)");
 
       builder.Property(u => u.StoreFlag);
+
+      builder.HasMany(u => u.UserStores)
+         .WithOne(us => us.UserProfile)
+         .HasForeignKey(us => us.UserName);
    }
 }
