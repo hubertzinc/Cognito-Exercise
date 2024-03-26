@@ -44,7 +44,7 @@ const SignIn = () => {
          return;
       }
 
-      apiService.get<IStore[]>("/store")
+      apiService.get<IStore[]>(`/store/user/${user.email}`)
          .then(stores => {
             setStores(stores);
          })
