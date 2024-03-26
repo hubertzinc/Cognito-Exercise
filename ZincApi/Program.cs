@@ -1,24 +1,32 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using ZincApi.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCognitoIdentity();
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+   options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-    options.Authority = "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_DaQRFdvVQ";
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        ValidateAudience = false
-    };
+   options.Authority = "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_DaQRFdvVQ";
+   options.TokenValidationParameters = new TokenValidationParameters
+   {
+      ValidateIssuerSigningKey = true,
+      ValidateAudience = false
+   };
 });
+
+builder.Services.AddDbContext<StoreContext>(options =>
+   options.UseSqlServer(
+      builder.Configuration.GetConnectionString("StoreContext"),
+      b => b.MigrationsAssembly(typeof(StoreContext).Assembly.FullName)));
+
+builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
