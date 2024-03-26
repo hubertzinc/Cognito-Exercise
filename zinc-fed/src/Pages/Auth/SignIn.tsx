@@ -6,6 +6,7 @@ import { IUser } from "../../Types/IUser";
 import { IStore } from "../../Types/IStore";
 import { ApiService } from "../../Providers/Api/ApiService";
 import StoresList from "../../Components/StoresList/StoresList";
+import { IUserProfile } from "../../Types/IUserProfile";
 
 interface ISignInProps {
    email: string;
@@ -16,12 +17,27 @@ const SignIn = () => {
    const authService = new AuthService();
    const apiService = new ApiService();
    const [user, setUser] = useState<IUser | null>(null);
+   const [userProfile, setUseProfile] = useState<IUserProfile | null>(null);
    const [stores, setStores] = useState<IStore[] | null>([]);
    const methods = useForm<ISignInProps>();
 
    useEffect(() => {
       setUser(authService.getUser());
    }, [])
+
+   useEffect(() => {
+      if (!user) {
+         return;
+      }
+
+      apiService.get<IUserProfile>(`/user/${user.email}`)
+      .then(userProfile => {
+            setUseProfile(userProfile);
+         })
+         .catch(error => {
+            alert(error);
+         });
+   }, [user])
 
    useEffect(() => {
       if (!user) {
@@ -101,8 +117,6 @@ const SignIn = () => {
          {user &&
             <>
                <div className="authenticated-content">
-
-
                   <div className="user-details-container">
                      {
                         <div className="user-info">
@@ -115,6 +129,17 @@ const SignIn = () => {
                               </div>
                               <div>
                                  Id: <span className="user-info__name--bold">{user.id}</span>
+                              </div>
+                              <br/>
+                              <h4>YOUR DETAILS FROM ZINCSTORE</h4>
+                              <div>
+                                 First Name: <span className="user-info__name--bold">{userProfile?.firstName}</span>
+                              </div>
+                              <div>
+                                 Last Name: <span className="user-info__name--bold">{userProfile?.lastName}</span>
+                              </div>
+                              <div>
+                                 Phone Number: <span className="user-info__name--bold">{userProfile?.phoneNumber}</span>
                               </div>
                            </div>
 
