@@ -6,6 +6,7 @@ export interface IAuthService {
    signIn(email: string, password: string): Promise<IUser>;
    signOut(): void;
    getUser(): IUser | null;
+   isAuthenticated(): boolean;
 }
 
 export class AuthService implements IAuthService {
@@ -70,5 +71,9 @@ export class AuthService implements IAuthService {
       }
 
       return JSON.parse(user) as IUser;
+   }
+
+   public isAuthenticated(): boolean {
+      return !!this.getUser();
    }
 }
