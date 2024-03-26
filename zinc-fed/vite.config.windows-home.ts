@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
    https: {
-      key: './localhost+2-key.pem',
+      key: './localhost_2-key.pem',
       cert: './localhost+2.pem'
    },
    port: 4310
