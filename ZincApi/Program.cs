@@ -37,6 +37,7 @@ builder.Services.AddDbContext<StoreContext>(options =>
       b => b.MigrationsAssembly(typeof(StoreContext).Assembly.FullName)));
 
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

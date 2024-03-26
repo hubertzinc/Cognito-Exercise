@@ -6,3 +6,6 @@ Authorization: Bearer {{token}}
 ### Store
 GET https://localhost:7004/store
 Authorization: Bearer {{token}}
+
+### User by username
+GET https://localhost:7004/user/hubert.dumas@zincgroup.com
