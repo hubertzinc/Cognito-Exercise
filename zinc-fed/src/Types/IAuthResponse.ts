@@ -10,3 +10,15 @@ export interface IAuthenticationResult {
    RefreshToken: string;
    TokenType: string;
 }
+
+export interface IAuthSignUpResponse {
+   UserConfirmed: boolean;
+   UserSub: string;
+   CodeDeliveryDetails: ICodeDeliveryDetails;
+}
+
+export interface ICodeDeliveryDetails {
+   AttributeName: string;
+   DeliveryMedium: string;
+   Destination: string;
+}

@@ -1,5 +1,5 @@
 import { jwtDecode } from "jwt-decode";
-import { IAuthResponse } from "../../Types/IAuthResponse";
+import { IAuthResponse, IAuthSignUpResponse } from "../../Types/IAuthResponse";
 import { IUser } from "../../Types/IUser";
 
 export interface IAuthService {
@@ -61,6 +61,62 @@ export class AuthService implements IAuthService {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
+   }
+
+   public signUp(username: string, email: string, password: string): Promise<IAuthSignUpResponse> {
+      const payload = {
+         Username: username,
+         Password: password,
+         UserAttributes: [
+            {
+               Name: "email",
+               Value: email
+            }
+         ],
+         ClientId: "55f5a6mpu0836rk8tk56uqdmt3"
+      };
+
+      const options = {
+         method: "POST",
+         body: JSON.stringify(payload),
+         headers: {
+            "Content-Type": "application/x-amz-json-1.1",
+            "X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp"
+         }
+      };
+
+      return fetch(this.baseUrl, options)
+      .then(response => {
+         return response.json();
+      })
+      .catch(error => {
+         throw error;
+      });
+   }
+
+   public verifySignUp(username: string, code: string): Promise<void> {
+      const payload = {
+         ClientId: "55f5a6mpu0836rk8tk56uqdmt3",
+         ConfirmationCode: code,
+         Username: username
+      };
+
+      const options = {
+         method: "POST",
+         body: JSON.stringify(payload),
+         headers: {
+            "Content-Type": "application/x-amz-json-1.1",
+            "X-Amz-Target": "AWSCognitoIdentityProviderService.ConfirmSignUp"
+         }
+      };
+
+      return fetch(this.baseUrl, options)
+         .then(response => {
+            return response.json();
+         })
+         .catch(error => {
+            throw error;
+         });
    }
 
    public getUser(): IUser | null {

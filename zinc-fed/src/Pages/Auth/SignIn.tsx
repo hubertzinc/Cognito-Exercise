@@ -3,6 +3,7 @@ import "./Auth.scss"
 import { useEffect, useState } from "react";
 import { AuthService } from "../../Providers/Auth/AuthService";
 import { IUser } from "../../Types/IUser";
+import { IAuthSignUpResponse } from "../../Types/IAuthResponse";
 
 interface ISignInFormProps {
    email: string;
@@ -22,11 +23,15 @@ export interface ISignInProps {
 const SignIn = ({ onSignIn }: ISignInProps) => {
    const authService = new AuthService();
    const [user, setUser] = useState<IUser | null>(null);
-   const [mode, setMode] = useState<"sign-in" | "sign-up">("sign-in");
+   const [mode, setMode] = useState<"sign-in" | "sign-up" | "verify">("sign-in");
    const methods = useForm<ISignInFormProps>();
+   
+   const [verificationCode, setVerificationCode] = useState<string>("");
+   const [signUpUsername, setSignUpUsername] = useState<string>("");
    const signUpMethods = useForm<ISignUpFormProps>();
+   
 
-      useEffect(() => {
+   useEffect(() => {
       setUser(authService.getUser());
    }, []);
 
@@ -51,6 +56,44 @@ const SignIn = ({ onSignIn }: ISignInProps) => {
    }
 
    const trySignUp = (data: ISignUpFormProps) => {
+      if (data.password !== data.confirmPassword) {
+         alert("Passwords do not match");
+         return;
+      }
+
+      const username = btoa(data.email);      
+      setSignUpUsername(username);
+
+      authService.signUp(username, data.email, data.password)
+         .then((response: IAuthSignUpResponse) => {
+            if (response.UserSub && !response.UserConfirmed) {
+               setMode("verify");
+            }
+         })
+         .catch(error => {
+            alert(error);
+         });
+   }
+
+   const handleChangeVerificationCode = (event: React.ChangeEvent<HTMLInputElement>) => {
+      setVerificationCode(event.target.value);
+   }
+
+   const handleVerify = () => {
+      if (!signUpUsername) {
+         alert("Invalid username");
+         return;
+      }
+
+      authService.verifySignUp(signUpUsername, verificationCode)
+         .then(response => {
+            console.log(response);
+            alert("Account verified. Please sign in.");
+            setMode("sign-in");
+         })
+         .catch(error => {
+            alert(error);
+         });
    }
 
    return (
@@ -63,7 +106,7 @@ const SignIn = ({ onSignIn }: ISignInProps) => {
                   <div className="sign-in-container">
                      <FormProvider {...methods}>
                         <form className="sign-in-form" onSubmit={methods.handleSubmit(trySignIn)}>
-                        <div className="form-row">
+                           <div className="form-row">
                               <label htmlFor="email">Email</label>
                               <input
                                  type="email"
@@ -107,7 +150,7 @@ const SignIn = ({ onSignIn }: ISignInProps) => {
                   <div className="sign-up-container">
                      <FormProvider {...signUpMethods}>
                         <form action="" className="sign-in-form" onSubmit={signUpMethods.handleSubmit(trySignUp)}>
-                        <div className="form-row">
+                           <div className="form-row">
                               <label htmlFor="email">Email</label>
                               <input
                                  type="email"
@@ -150,10 +193,27 @@ const SignIn = ({ onSignIn }: ISignInProps) => {
                                  } />
                            </div>
                            <div className="form-row form-actions">
+                              <button className="btn">Sign Up</button>
+                           </div>
+                           <div className="form-row form-actions">
                               <a className="sign-up" onClick={() => setMode("sign-in")}>Sign In</a>
                            </div>
                         </form>
                      </FormProvider>
+                  </div>
+               }
+               {
+                  mode === "verify" &&
+                  <div className="verify-container">
+                     <div className="form-row">
+                        Your account has been created. Please check your email for the verification code.
+                     </div>
+                     <div className="form-row">
+                        <input type="text" placeholder="Verification Code" onChange={handleChangeVerificationCode} />
+                     </div>
+                     <div className="form-row form-actions">
+                        <button className="btn" onClick={handleVerify}>Verify</button>
+                     </div>
                   </div>
                }
             </>

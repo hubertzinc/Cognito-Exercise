@@ -1,0 +1,16 @@
+HTTP/1.1 200 OK
+Date: Wed, 27 Mar 2024 00:06:06 GMT
+Content-Type: application/x-amz-json-1.1
+Content-Length: 171
+Connection: close
+x-amzn-RequestId: 75b2d90d-b8d7-4b3f-9685-f58890069246
+
+{
+  "CodeDeliveryDetails": {
+    "AttributeName": "email",
+    "DeliveryMedium": "EMAIL",
+    "Destination": "s***@y***"
+  },
+  "UserConfirmed": false,
+  "UserSub": "b8773850-fb11-4b42-a040-8cad6913342c"
+}
