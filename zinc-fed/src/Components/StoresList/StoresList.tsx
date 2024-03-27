@@ -30,7 +30,7 @@ const StoresList = ({ user }: IStoresListProps) => {
    
    return (
       <div className="stores-list">
-         <h1>Stores</h1>
+         <h1>Available Stores</h1>
 
          <table>
             <thead>
