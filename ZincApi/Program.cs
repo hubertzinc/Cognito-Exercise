@@ -13,7 +13,7 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-   options.Authority = "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_DaQRFdvVQ";
+   options.Authority = builder.Configuration["Cognito:Authority"];
    options.TokenValidationParameters = new TokenValidationParameters
    {
       ValidateIssuerSigningKey = true,
