@@ -8,33 +8,33 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCognitoIdentity();
 builder.Services.AddAuthentication(options =>
 {
-   options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+  options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-   options.Authority = "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_DaQRFdvVQ";
-   options.TokenValidationParameters = new TokenValidationParameters
-   {
-      ValidateIssuerSigningKey = true,
-      ValidateAudience = false
-   };
+  options.Authority = builder.Configuration["Cognito:Authority"];
+  options.TokenValidationParameters = new TokenValidationParameters
+  {
+    ValidateIssuerSigningKey = true,
+    ValidateAudience = false
+  };
 });
 
-builder.Services.AddCors(options => 
+builder.Services.AddCors(options =>
 {
-   options.AddPolicy("AllowAll", builder =>
-   {
-      builder.AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-   });
+  options.AddPolicy("AllowAll", builder =>
+  {
+    builder.AllowAnyOrigin()
+      .AllowAnyMethod()
+      .AllowAnyHeader();
+  });
 });
 
 builder.Services.AddDbContext<StoreContext>(options =>
-   options.UseSqlServer(
-      builder.Configuration.GetConnectionString("StoreContext"),
-      b => b.MigrationsAssembly(typeof(StoreContext).Assembly.FullName)));
+  options.UseSqlServer(
+    builder.Configuration.GetConnectionString("StoreContext"),
+    b => b.MigrationsAssembly(typeof(StoreContext).Assembly.FullName)));
 
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -49,8 +49,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-   app.UseSwagger();
-   app.UseSwaggerUI();
+  app.UseSwagger();
+  app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
