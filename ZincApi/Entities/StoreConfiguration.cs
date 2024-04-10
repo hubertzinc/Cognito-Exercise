@@ -14,5 +14,6 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
       builder.Property(x => x.Area).HasMaxLength(200);
       builder.Property(x => x.Url).HasMaxLength(200);
       builder.Property(x => x.TestSiteUrl).HasMaxLength(200);
+      builder.Property(x => x.LogoImage).HasMaxLength(50);
     }
 }
