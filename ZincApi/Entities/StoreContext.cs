@@ -13,6 +13,7 @@ public class StoreContext : DbContext
   public DbSet<UserProfile> UserProfiles { get; set; } = null!;
   public DbSet<UserStore> UserStores { get; set; } = null!;
   public DbSet<StoreStylesheet> StoreStylesheets { get; set; } = null!;
+  public DbSet<StoreSetting> StoreSettings { get; set; } = null!;
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

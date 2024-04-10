@@ -6,4 +6,5 @@ public interface IStoreRepository
   Task<List<Store>> GetAllAsync();
   Task<List<Store>> GetStoresByUser(string userName);
   Task<List<StoreStylesheet>> GetStylesheetsByStore(int storeId);
+  Task<StoreSetting?> GetSettingByStoreAndName(int storeId, string settingName);
 }

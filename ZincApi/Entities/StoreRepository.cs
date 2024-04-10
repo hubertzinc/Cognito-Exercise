@@ -40,4 +40,21 @@ public class StoreRepository : IStoreRepository
 
     return stylesheet;
   }
+
+  public async Task<StoreSetting?> GetSettingByStoreAndName(int storeId, string settingName)
+  {
+    var setting = await _context.StoreSettings
+      .Where(ss => ss.StoreId == storeId && ss.SettingName == settingName)
+      .FirstOrDefaultAsync();
+
+    if (setting != null)
+    {
+      setting.SettingValue = setting.SettingValue
+                  .Replace("\r\n", String.Empty) // For Windows line breaks
+                  .Replace("\n", String.Empty)   // For Unix/Linux line breaks
+                  .Replace("\r", String.Empty);
+    }
+
+    return setting;
+  }
 }

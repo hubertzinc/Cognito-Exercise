@@ -70,4 +70,15 @@ public class StoreController : ControllerBase
     return Ok(stylesheets);
   }
 
+  [HttpGet("{storeId}/settings/{settingName}", Name = "GetStoreSettingByName")]
+  public async Task<ActionResult<StoreSetting>> GetStoreSettingByName(int storeId, string settingName)
+  {
+    var setting = await _repository.GetSettingByStoreAndName(storeId, settingName);
+    if (setting == null)
+    {
+      Ok(null);
+    }
+    return Ok(setting);
+  }
+
 }
