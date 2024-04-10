@@ -1,0 +1,17 @@
+.main-container {
+  height: auto;
+  max-height: 50vh;
+  overflow-y: auto;
+  width: 90%;
+
+  > div {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .main-container {
+    width: 35%;
+  }
+  
+}
