@@ -5,7 +5,7 @@ namespace ZincApi.Entities;
 
 public class StoreConfiguration : IEntityTypeConfiguration<Store>
 {
-   public void Configure(EntityTypeBuilder<Store> builder)
+  public void Configure(EntityTypeBuilder<Store> builder)
     {
       builder.ToTable("Stores");
       builder.HasKey(x => x.Id);

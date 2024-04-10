@@ -63,4 +63,11 @@ public class StoreController : ControllerBase
     return Ok(new { Url = blobUri});
   }
 
+  [HttpGet("{storeId}/stylesheets", Name = "GetStylesheetsByStore")]
+  public async Task<ActionResult<List<StoreStylesheet>>> GetStoreStylesheets(int storeId)
+  {
+    var stylesheets = await _repository.GetStylesheetsByStore(storeId);
+    return Ok(stylesheets);
+  }
+
 }
