@@ -14,12 +14,18 @@ public class StoreController : ControllerBase
   private readonly IStoreRepository _repository;
   private readonly IStorageService _storageService;
   private readonly IBannerRepository _bannerRepository;
+  private readonly IUserRepository _userRepository;
 
-  public StoreController(IStoreRepository repository, IStorageService storageService, IBannerRepository bannerRepository)
+  public StoreController(
+    IStoreRepository repository,
+    IStorageService storageService,
+    IBannerRepository bannerRepository,
+    IUserRepository userRepository)
   {
     _repository = (StoreRepository)repository;
     _storageService = storageService;
     _bannerRepository = bannerRepository;
+    _userRepository = userRepository;
   }
 
   [HttpGet(Name = "GetStores")]
@@ -65,14 +71,6 @@ public class StoreController : ControllerBase
     var blobUri = _storageService.GetBlobUri(store.Area.ToLower(), $"Misc/{store.LogoImage}");
     
     return Ok(new { Url = blobUri});
-  }
-
-  [AllowAnonymous]
-  [HttpGet("{storeId}/stylesheets", Name = "GetStylesheetsByStore")]
-  public async Task<ActionResult<List<StoreStylesheet>>> GetStoreStylesheets(int storeId)
-  {
-    var stylesheets = await _repository.GetStylesheetsByStore(storeId);
-    return Ok(stylesheets);
   }
 
   [AllowAnonymous]
@@ -128,5 +126,22 @@ public class StoreController : ControllerBase
 
     return Ok(bannerList);
   }
+
+  [AllowAnonymous]
+  [HttpGet("{storeId}/stylesheets", Name = "GetStylesheetsByStore")]
+  public async Task<ActionResult<List<StoreStylesheet>>> GetStoreStylesheets(int storeId)
+  {
+    var stylesheets = await _repository.GetStylesheetsByStore(storeId);
+    return Ok(stylesheets);
+  }
+
+  [AllowAnonymous]
+  [HttpGet("{storeId}/hasaccess/{email}", Name = "UserHasAccessToStore")]
+  public async Task<ActionResult<bool>> UserHasAccessToStore(int storeId, string email)
+  {
+    var hasAccess = await _userRepository.UserHasStoreAsync(email, storeId);
+    return Ok(new { HasAccess = hasAccess });
+  }
+
 
 }
