@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ZincApi.Entities;
+using ZincApi.Models;
 using ZincApi.Services;
 
 namespace ZincApi.Controllers;
@@ -10,13 +11,15 @@ namespace ZincApi.Controllers;
 [Route("[controller]")]
 public class StoreController : ControllerBase
 {
-  private readonly StoreRepository _repository;
+  private readonly IStoreRepository _repository;
   private readonly IStorageService _storageService;
+  private readonly IBannerRepository _bannerRepository;
 
-  public StoreController(IStoreRepository repository, IStorageService storageService)
+  public StoreController(IStoreRepository repository, IStorageService storageService, IBannerRepository bannerRepository)
   {
     _repository = (StoreRepository)repository;
     _storageService = storageService;
+    _bannerRepository = bannerRepository;
   }
 
   [HttpGet(Name = "GetStores")]
@@ -44,6 +47,7 @@ public class StoreController : ControllerBase
     return Ok(stores);
   }
 
+  [AllowAnonymous]
   [HttpGet("{storeId}/logo", Name = "GetStoreLogo")]
   public async Task<ActionResult<string>> GetStoreLogo(int storeId)
   {
@@ -63,6 +67,7 @@ public class StoreController : ControllerBase
     return Ok(new { Url = blobUri});
   }
 
+  [AllowAnonymous]
   [HttpGet("{storeId}/stylesheets", Name = "GetStylesheetsByStore")]
   public async Task<ActionResult<List<StoreStylesheet>>> GetStoreStylesheets(int storeId)
   {
@@ -70,15 +75,58 @@ public class StoreController : ControllerBase
     return Ok(stylesheets);
   }
 
+  [AllowAnonymous]
   [HttpGet("{storeId}/settings/{settingName}", Name = "GetStoreSettingByName")]
   public async Task<ActionResult<StoreSetting>> GetStoreSettingByName(int storeId, string settingName)
   {
     var setting = await _repository.GetSettingByStoreAndName(storeId, settingName);
     if (setting == null)
     {
-      Ok(null);
+      return NotFound();
     }
     return Ok(setting);
+  }
+
+  [HttpGet("{storeId}/banners/for/{location}", Name = "GetBannersByLocation")]
+  public async Task<ActionResult<List<Banner>>> GetBannersByLocation(int storeId, int location)
+  {
+    var banners = await _bannerRepository.GetBannersByStoreAndLocation(storeId, 1);
+    var store = await _repository.GetByIdAsync(storeId);
+
+    if (store == null)
+    {
+      return StatusCode(500, "Store not found");
+    }
+
+    var bannerList = new List<BannerResponse>();
+
+    foreach (var banner in banners)
+    {
+      string imageUrl = _storageService.GetBlobUri(store.Area.ToLower(), $"Banners/{banner.Image}");
+
+      var bannerResponse = new BannerResponse(
+        banner.Id,
+        banner.StoreId,
+        banner.BannerLocationId,
+        banner.LanguageId,
+        banner.SortOrder,
+        banner.CategoryId,
+        banner.GroupBuyId,
+        banner.Image,
+        banner.MobileImage,
+        banner.TargetUrl,
+        banner.DateStart,
+        banner.DateEnd,
+        banner.DateModified,
+        banner.IsMovie,
+        banner.IsActive,
+        imageUrl
+      );
+
+      bannerList.Add(bannerResponse);
+    }
+
+    return Ok(bannerList);
   }
 
 }

@@ -41,6 +41,7 @@ builder.Services.AddDbContext<StoreContext>(options =>
 builder.Services.AddScoped<IStoreRepository, StoreRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IStorageService, StorageService>();
+builder.Services.AddScoped<IBannerRepository, BannerRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

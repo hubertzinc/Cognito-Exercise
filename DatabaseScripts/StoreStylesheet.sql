@@ -21,5 +21,8 @@ GO
 
 INSERT StoreStylesheets(StoreId, Link)
 SELECT 55, 'https://fonts.googleapis.com/css2?family=Ruda:wght@400..900&display=swap'
+GO
 
-
+INSERT StoreStylesheets(StoreId, Link)
+SELECT 55, 'https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Ruda:wght@400..900&display=swap'
+GO
