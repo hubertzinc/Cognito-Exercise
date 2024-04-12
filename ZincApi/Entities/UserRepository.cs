@@ -13,7 +13,12 @@ public class UserRepository : IUserRepository
 
   public async Task<UserProfile?> GetByUsernameAsync(string username)
   {
-    return await _context.UserProfiles.FindAsync(username);
+    return await _context.UserProfiles
+      .Include(u => u.ShippingAddress)
+      .ThenInclude(a => a!.State)
+      .Include(u => u.ShippingAddress)
+      .ThenInclude(a => a!.Country)
+      .FirstOrDefaultAsync(u => u.UserName == username);
   }
 
   public async Task<bool> UserHasStoreAsync(string username, int storeId)
