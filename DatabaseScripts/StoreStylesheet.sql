@@ -26,3 +26,11 @@ GO
 INSERT StoreStylesheets(StoreId, Link)
 SELECT 55, 'https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Ruda:wght@400..900&display=swap'
 GO
+
+INSERT StoreStylesheets(Storeid, Link)
+SELECT 55, 'https://zincstoreglobaldev.blob.core.windows.net/michelin/Misc/michelin.css'
+
+
+INSERT StoreStylesheets(Storeid, Link)
+SELECT 54, 'https://zincstoreglobaldev.blob.core.windows.net/sandvik/Misc/sandvik.css'
+GO
