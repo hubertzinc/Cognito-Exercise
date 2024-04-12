@@ -31,6 +31,10 @@ INSERT StoreStylesheets(Storeid, Link)
 SELECT 55, 'https://zincstoreglobaldev.blob.core.windows.net/michelin/Misc/michelin.css'
 
 
+INSERT StoreStylesheets(StoreId, Link)
+SELECT 54, 'https://fonts.googleapis.com/css?family=Arvo|Lato'
+GO
+
 INSERT StoreStylesheets(Storeid, Link)
 SELECT 54, 'https://zincstoreglobaldev.blob.core.windows.net/sandvik/Misc/sandvik.css'
 GO
