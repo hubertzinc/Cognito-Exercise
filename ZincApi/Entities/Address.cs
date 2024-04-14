@@ -12,7 +12,6 @@ public class Address
   public string? AddressLine2 { get; set; }
   public string? City { get; set; }
   public int? StateID { get; set; }
-  public string? StateCode { get; set; }
   public int? CountryId { get; set; }
   public string? PostCode { get; set; }
   public string? Email { get; set; }
