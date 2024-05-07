@@ -14,9 +14,10 @@
       "dotnetRunMessages": true,
       "launchBrowser": false,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7004;http://localhost:7005",
+      "applicationUrl": "https://localhost:8004;http://localhost:8005",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Cognito__Authority": "https://cognito-idp.ap-southeast-2.amazonaws.com/ap-southeast-2_pnaIVxuQw"
       }
     },
     "http": {
